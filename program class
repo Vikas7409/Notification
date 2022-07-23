@@ -1,0 +1,159 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.VisualBasic;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mail;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp
+{
+    public class Program
+    {
+        private static SqlConnection sqlConnection;
+        static string vikas = "AAAAnKzTll4:APA91bEwfxw3qV6oMlY2dzL3TgzH2U-AvM0XOo9AGsEtIyEYrSSK2sW0pfhDzgA-W5H0bGS1I3SHxM8LZzZSy0MbFs2QAiUjaBddoscH8c-dpiD_j-nzaL34TXMz3KExXuhXQaqXpFsN";
+        static void Main(string[] args)
+        {
+
+            GetParameters(1);
+            mail();
+            dummyMail();
+
+
+        }
+        public static string GetParameters(int ProductID)
+        {
+            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var val1 = configuration.GetConnectionString("vikas");
+
+
+            SqlConnection sqlConnection = new SqlConnection(val1);
+
+            SqlCommand command = new SqlCommand("vikas", sqlConnection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@ProductID", ProductID);
+            sqlConnection.Open();
+            SqlDataReader obj = command.ExecuteReader();
+            while (obj.Read())
+            {
+                Console.WriteLine(obj[0].ToString());
+                Console.WriteLine(obj[1].ToString());
+                Console.WriteLine(obj[2].ToString());
+                Console.WriteLine(obj[3].ToString());
+                Console.WriteLine(obj[4].ToString());
+            }
+            sqlConnection.Close();
+            return "tere";
+        }
+        public async static void mail()
+        {
+            
+            using (var client2 = new HttpClient())
+            {
+                Datum objdatum = new Datum();
+                var content = new StringContent(JsonConvert.SerializeObject("employees"), System.Text.Encoding.UTF8, "application/vnd.api+json");
+                //Headers
+                client2.DefaultRequestHeaders.Add(Constants.Authorization, "Basic " + vikas);
+                client2.DefaultRequestHeaders.Add(Constants.AddeparFirm, Constants.AddeparFirmValue);
+
+                var URL = new Uri("https://dummy.restapiexample.com/api/v1/");
+                var response = await client2.PatchAsync(URL, content).ConfigureAwait(false);
+                if (response.IsSuccessStatusCode)
+                {
+                    var results = response.Content.ReadAsStringAsync().Result;
+                }
+                //if (response)
+                //{
+                //    
+
+                //    _logger.LogWarning("Application updated record successfully into addepar portal.");
+                //    //await File.AppendAllTextAsync(errorPath, "Custom Field update successfully in addepar portal" + DateTime.Now);
+                //}
+                //else
+                //{
+                //    _logger.LogWarning("Application not updated record successfully into addepar portal.");
+                //    // await File.AppendAllTextAsync(errorPath, "Custom field not update successfully.");
+
+                //}
+                //return "Server is not responding, please try after sometime";
+            }
+
+        }
+
+        public static void dummyMail()
+        {
+            var client = new RestClient("https://dummy.restapiexample.com/api/v1/");
+            var request = new RestRequest("employees");
+            var response = client.Execute(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string rawResponse = response.Content;
+                Rootobject result = JsonConvert.DeserializeObject<Rootobject>(rawResponse);
+            }
+        }
+        public class Rootobject
+        {
+            public string status { get; set; }
+            public Datum[] data { get; set; }
+            public string message { get; set; }
+        }
+
+        public class Datum
+        {
+            public int id { get; set; }
+            public string employee_name { get; set; }
+            public int employee_salary { get; set; }
+            public int employee_age { get; set; }
+            public string profile_image { get; set; }
+        }
+    }
+
+    //    using (var client2 = new HttpClient())
+    //    {
+    //        var content = new StringContent(JsonConvert.SerializeObject(model), System.Text.Encoding.UTF8, "application/vnd.api+json");
+    //        //Headers
+    //        client2.DefaultRequestHeaders.Add(Constants.Authorization, "Basic " + vikas);
+    //        //client2.DefaultRequestHeaders.Add(Constants.AddeparFirm, Constants.AddeparFirmValue);
+
+    //        var URL = new Uri("https://fcm.googleapis.com/fcm/send" +
+    //            "");
+    //        var response =  client2.PatchAsync(URL, content).ConfigureAwait(false);
+    //        if (response.IsSuccessStatusCode)
+    //        {
+    //            var results = response.Content.ReadAsStringAsync().Result;
+
+    //            _logger.LogWarning("Application updated record successfully into addepar portal.");
+    //            //await File.AppendAllTextAsync(errorPath, "Custom Field update successfully in addepar portal" + DateTime.Now);
+    //        }
+    //        else
+    //        {
+    //            _logger.LogWarning("Application not updated record successfully into addepar portal.");
+    //            // await File.AppendAllTextAsync(errorPath, "Custom field not update successfully.");
+
+    //        }
+    //        //return "Server is not responding, please try after sometime";
+    //    }
+
+
+    //}
+   
+    
+    
+
+
+
+
+}
+
+    
+
+
+
+
+
