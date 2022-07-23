@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp
+{
+    class Constants
+    {
+        public const string Authorization = "Authorization";
+        public const string AuthorizationKey = "Basic " + "NTY5OGUwNDEtOWQ0Ni00MWM5LTkyMWYtNjE3NTM3MDc2ZDEwOlBMTzBGc1hKRW1HaTNudWV2SFE3NXpSendRQlZvRW43blNPd0dseTI=";
+        public const string ContentType = "ContentType";
+        public const string ContentTypeValue = "application/vnd.api+json";
+        public const string AddeparFirm = "Addepar-Firm";
+        public const string AddeparFirmValue = "705";
+        public const string PortfolioApi = "/api/v1/portfolio/views/";
+        public const string results = "/results?";
+        public const string FixedParametersEntity = "portfolio_type=entity&output_type=json&";
+        public const string FixedParametersFirm = "portfolio_type=firm&output_type=json&";
+
+    }
+}
