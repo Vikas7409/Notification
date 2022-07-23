@@ -1,0 +1,10 @@
+{
+  "ConnectionStrings": { "vikas": "Data Source=CHETUIWK2062\\MSSSQL2019;Initial Catalog=pppp;Integrated Security=True;Pooling=False" },
+  "Smtp": {
+    "Host": "smtp.gmail.com",
+    "Port": "587",
+    "Username": "<YourGmailUserName>",
+    "Password": "<YourGmailPassword>",
+    "From": "Your Name"
+  }
+}
